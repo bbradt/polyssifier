@@ -103,16 +103,15 @@ class MyRegressionMedianer(object):
 def build_classifiers(exclude, scale, feature_selection, nCols):
     '''
     Input:
-    - exclude: list of names of classifiers to exclude from the analysis
-    - scale: True or False. Scale data before fitting classifier
-    - feature_selection: True or False. Run feature selection before
-    fitting classifier
-    - nCols: Number of columns in input dataset to classifiers
-
+        - exclude: list of names of classifiers to exclude from the analysis
+        - scale: True or False. Scale data before fitting classifier
+        - feature_selection: True or False. Run feature selection before
+        fitting classifier
+        - nCols: Number of columns in input dataset to classifiers
     Output:
     Dictionary with classifier name as keys.
-    - 'clf': Classifier object
-    - 'parameters': Dictionary with parameters of 'clf' as keys
+        - 'clf': Classifier object
+        - 'parameters': Dictionary with parameters of 'clf' as keys
     '''
     classifiers = collections.OrderedDict()
 

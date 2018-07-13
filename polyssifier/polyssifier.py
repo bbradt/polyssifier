@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 import sys
-import argparse
 import numpy as np
 import pickle as p
 from multiprocessing import Manager, Pool
@@ -35,28 +34,21 @@ DEFAULT_verbose = True
 DEFAULT_num_degrees = 1
 
 class Polyssifier():
-    '''Polyssifier - wrapper for sklearn classifiers and regressors.
-        Run multiple models on data, and output a report.
-            #################################################################
-            variable        description    dtype        expected vals
-            #################################################################
-            data            feature set    np.ndarray   -
-            label           label set      np.ndarray   -
-            do_classify     run poly       boolean      any boolean
-                              classifiers
-                              else, regr
-            n_folds         number of CV   int          any integer
-                              folds
-            scale           scale the      boolean      any boolean
-                              data?
-            scoring         score metric   str          'auc', ...
-            project_name    folder name    str          any slugified str
-            concurrency     number of      int          any int below max
-                              workers                     workers
-            verbose         verbose out    boolean      any boolean
-            num_degrees     number of      int          any int
-                              poly degree
-    '''
+    """Polyssifier - wrapper for sklearn classifiers and regressors.
+       Run multiple models on data, and output a report.
+
+       | variable     | description   | dtype       | expected vals     |
+       | ------------ | ------------- | ----------- | ----------------- |
+       | data         |   feature set | np.ndarray  | ----------------- |
+       | label        |   label set   | np.ndarray  | ----------------- |
+       | n_folds      | # of folds    | int         | any integer       |
+       | scale        | scale data?   | boolean     | any boolean       |
+       | scoring      | score metric  | str         | 'auc', ...        |
+       | project_name | folder name   | str         | any slugified str |
+       | concurrency  | # workers     | int         | any int below max |
+       | verbose      | verbose out   | boolean     | any boolean       |
+       | num_degrees  |degree of poly | int         | any int           |
+    """
     
     def __init__(self, data, label, do_regress=DEFAULT_do_regress,
                  n_folds=DEFAULT_n_folds, scale=DEFAULT_scale,
@@ -151,8 +143,8 @@ class Polyssifier():
     
     def run(self):
         '''
-        Run the analysis.
-        Fits the models, gathers results, aggregates scores,
+            Run the analysis.
+            Fits the models, gathers results, aggregates scores,
             generates the report, and saves results.
         '''
         logger.info('Running polyssifier.')
@@ -304,15 +296,15 @@ class Polyssifier():
         '''Function that scores a classifier according to what is available as a
         predict function.
         Input:
-        - clf = Fitted classifier object
-        - X = input data matrix
-        - y = estimated labels
+            - clf = Fitted classifier object
+            - X = input data matrix
+            - y = estimated labels
         Output:
-        - AUC score for binary classification or F1 for multiclass
+            - AUC score for binary classification or F1 for multiclass
         The order of priority is as follows:
-        - predict_proba
-        - decision_function
-        - predict
+            - predict_proba
+            - decision_function
+            - predict
         '''
         n_class = len(np.unique(y))
         if n_class == 2:
@@ -340,15 +332,15 @@ class Polyssifier():
         '''
         Multiprocess safe function that fits classifiers
         args: shared dictionary that contains
-            X: all data
-            y: all labels
-            k_fold: list of train and test indexes for each fold
-        clf_name: name of the classifier model
-        val: dictionary with
-            clf: sklearn compatible classifier
-            parameters: dictionary with parameters, can be used for grid search
-        n_fold: number of folds
-        project_name: string with the project folder name to save model
+            - X = all data
+            - y = all labels
+            - k_fold = list of train and test indexes for each fold
+            - clf_name = name of the classifier model
+            - val = dictionary with
+            - clf = sklearn compatible classifier
+            - parameters = dictionary with parameters, can be used for grid search
+            - n_fold = number of folds
+            - project_name = string with the project folder name to save model
         '''
         train, test = args[0]['k_fold'][n_fold]
         X = args[0]['X'][train, :]
@@ -453,12 +445,12 @@ class Polyssifier():
         '''Function that scores a regressor according to what is available as a
         predict function.
         Input:
-        - reg = Fitted regressor object
-        - X = input data matrix
-        - y = corresponding values to the data matrix
+            - reg = Fitted regressor object
+            - X = input data matrix
+            - y = corresponding values to the data matrix
         Output:
-        - The mean sqaure error or r squared value for the given regressor and data. The default scoring is
-        r squared value.
+            - The mean sqaure error or r squared value for the given regressor and data. The default scoring is
+            r squared value.
         '''
         if scoring == 'mse':
             return mean_squared_error(y, reg.predict(X))
@@ -470,15 +462,15 @@ class Polyssifier():
         '''
         Multiprocess safe function that fits classifiers
         args: shared dictionary that contains
-            X: all data
-            y: all labels
-            k_fold: list of train and test indexes for each fold
-        reg_name: name of the classifier or regressor model
-        val: dictionary with
-            reg: sklearn compatible classifier 
-            parameters: dictionary with parameters, can be used for grid search
-        n_fold: number of folds
-        project_name: string with the project folder name to save model
+            - X = all data
+            - y = all labels
+            - k_fold = list of train and test indexes for each fold
+            - reg_name = name of the classifier or regressor model
+            - val = dictionary with
+            - reg = sklearn compatible classifier 
+            - parameters = dictionary with parameters, can be used for grid search
+            - n_fold = number of folds
+            - project_name = string with the project folder name to save model
         '''
     
         # Creates the scoring string to pass into grid search.

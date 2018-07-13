@@ -4,11 +4,11 @@ Created on Fri Jul 13 11:57:09 2018
 
 @author: Brad
 """
-from poly_new import Polyssifier
+from polyssifier import Polyssifier
 import argparse
 import logging
 from .logger import make_logger
-import deepcopy
+from copy import deepcopy
 import numpy as np
 import os
 
