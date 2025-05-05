@@ -1,8 +1,10 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import LinearSVC, SVC, NuSVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import (RandomForestClassifier, AdaBoostClassifier,
-                              BaggingClassifier, GradientBoostingClassifier)
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
+from sklearn.ensemble import (RandomForestClassifier, RandomForestRegressor,
+                              AdaBoostClassifier, AdaBoostRegressor,
+                              BaggingClassifier, BaggingRegressor,
+                              GradientBoostingRegressor, GradientBoostingClassifier)
 
 from sklearn.linear_model import (LogisticRegression,
                                   LinearRegression,
@@ -387,6 +389,35 @@ def build_regressors(exclude, scale, feature_selection, nCols):
             'reg': KNeighborsRegressor(),
             'parameters': {}  # Best to leave default parameters
         }
+
+    if 'Random Forest' not in exclude:
+        regressors['Random Forest'] = {
+            'reg': RandomForestRegressor(),
+            'parameters': {}
+        }
+
+    if 'Decision Tree' not in exclude:
+        regressors['Decision Tree'] = {
+            'reg': DecisionTreeRegressor(),
+            'parameters': {}
+        }
+    
+    if 'Ada Boost' not in exclude:
+        regressors['Ada Boost'] = {
+            'clf': AdaBoostRegressor(),
+            'parameters': {}}
+
+    if 'Bagging' not in exclude:
+        regressors['Ada Boost'] = {
+            'clf': BaggingRegressor(),
+            'parameters': {}}
+
+    if 'Gradient Boost' not in exclude:
+        regressors['Gradient Boost'] = {
+            'clf': GradientBoostingRegressor(),
+            'parameters': {}}
+
+    
 
     def name(x):
         """
